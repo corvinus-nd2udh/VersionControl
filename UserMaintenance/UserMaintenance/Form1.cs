@@ -21,6 +21,7 @@ namespace UserMaintenance
             labelFullName.Text = Resource1.FullName;
             buttonAdd.Text = Resource1.Add;
             buttonWriteOut.Text = Resource1.WriteOut;
+            buttonDelete.Text = Resource1.Delete;
 
             listBoxUsers.DataSource = users;
             listBoxUsers.DisplayMember = "FullName";
@@ -67,6 +68,12 @@ namespace UserMaintenance
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            var selected = (User)listBoxUsers.SelectedItem;
+            users.Remove(selected);
         }
     }
 }
