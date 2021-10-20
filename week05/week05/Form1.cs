@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace week05
         PortfolioEntities context = new PortfolioEntities();
         List<Tick> Ticks;
         List<PortfolioItem> Portfolio = new List<PortfolioItem>();
+        List<decimal> nyeresegekRendezve;
         public Form1()
         {
             InitializeComponent();
@@ -34,8 +36,8 @@ namespace week05
                 Nyereségek.Add(ny);
                 Console.WriteLine(i + " " + ny);
             }
-            var nyereségekRendezve = (from x in Nyereségek orderby x select x).ToList();
-            MessageBox.Show(nyereségekRendezve[nyereségekRendezve.Count() / 5].ToString());
+            nyeresegekRendezve = (from x in Nyereségek orderby x select x).ToList();
+            MessageBox.Show(nyeresegekRendezve[nyeresegekRendezve.Count() / 5].ToString());
         }
 
         private void CreatePortfolio()
@@ -58,6 +60,43 @@ namespace week05
                 value += (decimal)last.Price * item.Volume;
             }
             return value;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Comma Separated Values (*.csv)|*.csv";
+            sfd.InitialDirectory = Application.StartupPath;
+            sfd.DefaultExt = "csv";
+            sfd.AddExtension = true;
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.Default))
+                    {
+                        sw.Write("Időszak");
+                        sw.Write(';');
+                        sw.Write("Nyereség");
+                        sw.WriteLine();
+                        int counter = 1;
+                        foreach (var item in nyeresegekRendezve)
+                        {
+                            sw.Write(counter);
+                            sw.Write(';');
+                            sw.Write(item);
+                            sw.WriteLine();
+                            counter++;
+                        }
+                    }
+                    MessageBox.Show("Sikeres mentés!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                
+            }
         }
     }
 }
