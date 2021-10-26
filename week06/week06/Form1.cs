@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using week06.MnbServiceReference;
 using week06.Entities;
 using System.Xml;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Globalization;
 
 namespace week06
 {
@@ -22,6 +24,26 @@ namespace week06
             //WebService();
             dataGridView1.DataSource = Rates;
             ProcessXML(WebService());
+            DeployChart();
+        }
+
+        private void DeployChart()
+        {
+            chartRateData.DataSource = Rates;
+            var series = chartRateData.Series[0];
+            series.ChartType = SeriesChartType.Line;
+            series.XValueMember = "Date";
+            series.YValueMembers = "Value";
+            series.BorderWidth = 2;
+            var chartArea = chartRateData.ChartAreas[0];
+            //chartArea.AxisX.LineWidth = 2;
+            //chartArea.AxisY.LineWidth = 2;
+            chartArea.AxisX.MajorGrid.Enabled = false;
+            chartArea.AxisY.MajorGrid.Enabled = false;
+            chartArea.AxisY.IsStartedFromZero = false;
+            var legend = chartRateData.Legends[0];
+            legend.Enabled = false;
+
         }
 
         private void ProcessXML(string result)
@@ -30,23 +52,22 @@ namespace week06
             xml.LoadXml(result);
             foreach (XmlElement element in xml.DocumentElement)
             {
-                var childElement = (XmlElement)element.ChildNodes[0];
-                decimal value;
-                if (childElement.InnerText.Equals('0'))
-                {
-                    value = decimal.Parse(childElement.GetAttribute("unit"));
-                }
-                else
-                {
-                    value = decimal.Parse(childElement.GetAttribute("unit")) / decimal.Parse(childElement.InnerText);
-                }
-                RateData rateData = new RateData()
-                {
-                    Date = DateTime.Parse(element.GetAttribute("date")),
-                    Currency = childElement.GetAttribute("curr"),
-                    Value = value
-                };
+                RateData rateData = new RateData();
                 Rates.Add(rateData);
+
+                rateData.Date = DateTime.Parse(element.GetAttribute("date"));
+
+                var childElement = (XmlElement)element.ChildNodes[0];
+                rateData.Currency = childElement.GetAttribute("curr");
+
+                var unit = decimal.Parse(childElement.GetAttribute("unit"));
+                //var value = decimal.Parse(childElement.InnerText);
+                var value = decimal.Parse(childElement.InnerText, CultureInfo.GetCultureInfo("hu-HU"));
+                if (unit != 0)
+                {
+                    rateData.Value = value / unit;
+                }
+                else rateData.Value = unit;
             }
         }
 
