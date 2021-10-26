@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace week06
 {
     public partial class Form1 : Form
@@ -15,6 +16,12 @@ namespace week06
         public Form1()
         {
             InitializeComponent();
+            WebService();
+        }
+
+        private void WebService()
+        {
+            MNBArfoly
         }
     }
 }
