@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using week06.MnbServiceReference;
 using week06.Entities;
-
+using System.Xml;
 
 namespace week06
 {
@@ -19,11 +19,38 @@ namespace week06
         public Form1()
         {
             InitializeComponent();
-            WebService();
+            //WebService();
             dataGridView1.DataSource = Rates;
+            ProcessXML(WebService());
         }
 
-        private void WebService()
+        private void ProcessXML(string result)
+        {
+            XmlDocument xml = new XmlDocument();
+            xml.LoadXml(result);
+            foreach (XmlElement element in xml.DocumentElement)
+            {
+                var childElement = (XmlElement)element.ChildNodes[0];
+                decimal value;
+                if (childElement.InnerText.Equals('0'))
+                {
+                    value = decimal.Parse(childElement.GetAttribute("unit"));
+                }
+                else
+                {
+                    value = decimal.Parse(childElement.GetAttribute("unit")) / decimal.Parse(childElement.InnerText);
+                }
+                RateData rateData = new RateData()
+                {
+                    Date = DateTime.Parse(element.GetAttribute("date")),
+                    Currency = childElement.GetAttribute("curr"),
+                    Value = value
+                };
+                Rates.Add(rateData);
+            }
+        }
+
+        private string WebService()
         {
             var mnbService = new MNBArfolyamServiceSoapClient();
             var request = new GetExchangeRatesRequestBody
@@ -34,6 +61,7 @@ namespace week06
             };
             var response = mnbService.GetExchangeRates(request);
             var result = response.GetExchangeRatesResult;
+            return result;
         }
     }
 }
