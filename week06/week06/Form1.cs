@@ -18,11 +18,30 @@ namespace week06
     public partial class Form1 : Form
     {
         BindingList<RateData> Rates = new BindingList<RateData>();
+        BindingList<string> Currencies = new BindingList<string>();
         public Form1()
         {
             InitializeComponent();
-            //WebService();
+            //Currencies lekérdezés
+            var mnbService = new MNBArfolyamServiceSoapClient();
+            var request = new GetCurrenciesRequestBody();
+            var response = mnbService.GetCurrencies(request);
+            var result = response.GetCurrenciesResult;
+            //Console.WriteLine(result);
+            CurrenciesXML(result);
+            comboBoxCurrency.DataSource = Currencies;
             RefreshData();
+        }
+
+        private void CurrenciesXML(string result)
+        {
+            var xml = new XmlDocument();
+            xml.LoadXml(result);
+            foreach (XmlElement element in xml.DocumentElement.ChildNodes[0])
+            {
+                string data = element.InnerText;
+                Currencies.Add(data);
+            }
         }
 
         private void RefreshData()
@@ -62,10 +81,10 @@ namespace week06
                 rateData.Date = DateTime.Parse(element.GetAttribute("date"));
 
                 var childElement = (XmlElement)element.ChildNodes[0];
+                if (childElement == null) continue;
                 rateData.Currency = childElement.GetAttribute("curr");
 
                 var unit = decimal.Parse(childElement.GetAttribute("unit"));
-                //var value = decimal.Parse(childElement.InnerText);
                 var value = decimal.Parse(childElement.InnerText, CultureInfo.GetCultureInfo("hu-HU"));
                 if (unit != 0)
                 {
