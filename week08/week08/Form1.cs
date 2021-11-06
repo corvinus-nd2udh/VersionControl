@@ -85,5 +85,14 @@ namespace week08
             if (colorDialog.ShowDialog() != DialogResult.OK) return;
             button.BackColor = colorDialog.Color;
         }
+
+        private void buttonPresent_Click(object sender, EventArgs e)
+        {
+            Factory = new PresentFactory()
+            {
+                BoxColor = buttonBoxColor.BackColor,
+                RibbonColor = buttonRibbonColor.BackColor
+            };
+        }
     }
 }

@@ -37,13 +37,16 @@ namespace week08
             this.buttonBall = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonColor = new System.Windows.Forms.Button();
+            this.buttonPresent = new System.Windows.Forms.Button();
+            this.buttonBoxColor = new System.Windows.Forms.Button();
+            this.buttonRibbonColor = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // mainPanel
             // 
-            this.mainPanel.Location = new System.Drawing.Point(1, 102);
+            this.mainPanel.Location = new System.Drawing.Point(1, 120);
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(798, 349);
+            this.mainPanel.Size = new System.Drawing.Size(798, 331);
             this.mainPanel.TabIndex = 0;
             // 
             // createTimer
@@ -81,7 +84,7 @@ namespace week08
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(184, 24);
+            this.label1.Location = new System.Drawing.Point(280, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 2;
@@ -97,11 +100,44 @@ namespace week08
             this.buttonColor.UseVisualStyleBackColor = false;
             this.buttonColor.Click += new System.EventHandler(this.buttonColor_Click);
             // 
+            // buttonPresent
+            // 
+            this.buttonPresent.Location = new System.Drawing.Point(174, 19);
+            this.buttonPresent.Name = "buttonPresent";
+            this.buttonPresent.Size = new System.Drawing.Size(75, 23);
+            this.buttonPresent.TabIndex = 4;
+            this.buttonPresent.Text = "PRESENT";
+            this.buttonPresent.UseVisualStyleBackColor = true;
+            this.buttonPresent.Click += new System.EventHandler(this.buttonPresent_Click);
+            // 
+            // buttonBoxColor
+            // 
+            this.buttonBoxColor.BackColor = System.Drawing.Color.Blue;
+            this.buttonBoxColor.Location = new System.Drawing.Point(175, 48);
+            this.buttonBoxColor.Name = "buttonBoxColor";
+            this.buttonBoxColor.Size = new System.Drawing.Size(75, 23);
+            this.buttonBoxColor.TabIndex = 5;
+            this.buttonBoxColor.UseVisualStyleBackColor = false;
+            this.buttonBoxColor.Click += new System.EventHandler(this.buttonColor_Click);
+            // 
+            // buttonRibbonColor
+            // 
+            this.buttonRibbonColor.BackColor = System.Drawing.Color.Yellow;
+            this.buttonRibbonColor.Location = new System.Drawing.Point(175, 78);
+            this.buttonRibbonColor.Name = "buttonRibbonColor";
+            this.buttonRibbonColor.Size = new System.Drawing.Size(75, 23);
+            this.buttonRibbonColor.TabIndex = 6;
+            this.buttonRibbonColor.UseVisualStyleBackColor = false;
+            this.buttonRibbonColor.Click += new System.EventHandler(this.buttonColor_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonRibbonColor);
+            this.Controls.Add(this.buttonBoxColor);
+            this.Controls.Add(this.buttonPresent);
             this.Controls.Add(this.buttonColor);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.mainPanel);
@@ -123,6 +159,9 @@ namespace week08
         private System.Windows.Forms.Button buttonBall;
         private System.Windows.Forms.Button buttonCar;
         private System.Windows.Forms.Button buttonColor;
+        private System.Windows.Forms.Button buttonPresent;
+        private System.Windows.Forms.Button buttonBoxColor;
+        private System.Windows.Forms.Button buttonRibbonColor;
     }
 }
 
