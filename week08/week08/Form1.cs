@@ -16,17 +16,31 @@ namespace week08
     {
         private List<Toy> _toys = new List<Toy>();
         private IToyFactory _factory;
+        Toy _nextToy;
 
         public IToyFactory Factory
         {
             get { return _factory; }
-            set { _factory = value; }
+            set
+            {
+                _factory = value;
+                DisplayNext();
+            }
         }
 
         public Form1()
         {
             InitializeComponent();
-            Factory = new CarFactory();
+            //Factory = new CarFactory();
+        }
+
+        private void DisplayNext()
+        {
+            if (_nextToy != null) Controls.Remove(_nextToy);
+            _nextToy = Factory.CreateNew();
+            _nextToy.Left = label1.Left + label1.Width + 20;
+            _nextToy.Top = label1.Top;
+            Controls.Add(_nextToy);
         }
 
         private void createTimer_Tick(object sender, EventArgs e)
@@ -51,6 +65,16 @@ namespace week08
                 _toys.Remove(first);
                 mainPanel.Controls.Remove(first);
             }
+        }
+
+        private void buttonCar_Click(object sender, EventArgs e)
+        {
+            Factory = new CarFactory();
+        }
+
+        private void buttonBall_Click(object sender, EventArgs e)
+        {
+            Factory = new BallFactory();
         }
     }
 }
