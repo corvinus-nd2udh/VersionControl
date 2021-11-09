@@ -16,7 +16,15 @@ namespace week08.Abstractions
             Width = 50;
             Height = 50;
             Paint += Toy_Paint;
+            Click += Toy_Click;
         }
+
+        private void Toy_Click(object sender, EventArgs e)
+        {
+            ShowType();
+        }
+
+        protected abstract void ShowType();
 
         private void Toy_Paint(object sender, PaintEventArgs e)
         {
