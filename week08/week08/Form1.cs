@@ -31,7 +31,7 @@ namespace week08
         public Form1()
         {
             InitializeComponent();
-            //Factory = new CarFactory();
+            Factory = new CarFactory();
         }
 
         private void DisplayNext()
