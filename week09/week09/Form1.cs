@@ -19,18 +19,25 @@ namespace week09
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
 
+        List<int> Males = new List<int>();
+        List<int> Females = new List<int>();
+
         Random rng = new Random(1234);
         public Form1()
         {
             InitializeComponent();
-
-            Population = GetPopulation(@"C:\Temp\nép-teszt.csv");
-            BirthProbabilities = GetBirthProbabilities(@"C:\Temp\születés.csv");
-            DeathProbabilities = GetDeathProbabilities(@"C:\Temp\halál.csv");
         }
 
         private void Simulation()
         {
+            richTextBox1.Text = string.Empty;
+            Males.Clear();
+            Females.Clear();
+
+            Population = GetPopulation(@textBoxCsvPath.Text);
+            BirthProbabilities = GetBirthProbabilities(@"C:\Temp\születés.csv");
+            DeathProbabilities = GetDeathProbabilities(@"C:\Temp\halál.csv");
+
             for (int year = 2005; year <= numericUpDownCloseDate.Value; year++)
             {
                 for (int i = 0; i < Population.Count; i++)
@@ -44,7 +51,19 @@ namespace week09
                 int numberOfFemales = (from x in Population
                                        where x.Gender == Gender.Female && x.IsAlive
                                        select x).Count();
+                Males.Add(numberOfMales);
+                Females.Add(numberOfFemales);
                 Console.WriteLine(string.Format("Év: {0}, Férfiak: {1}, Nők: {2}", year, numberOfMales, numberOfFemales));
+            }
+            DisplayResult();
+        }
+
+        private void DisplayResult()
+        {
+            for (int i = 2005; i <= numericUpDownCloseDate.Value; i++)
+            {
+                richTextBox1.Text +=
+                    string.Format("Szimulációs év: {0}\n\t Férfiak: {1}\n\t Nők: {2}\n\n", i, Males[i - 2005], Females[i - 2005]);
             }
         }
 
@@ -150,7 +169,7 @@ namespace week09
             ofd.AddExtension = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-
+                textBoxCsvPath.Text = ofd.FileName;
             }
         }
     }
